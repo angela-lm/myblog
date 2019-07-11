@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/tagBlogList.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><a href="/index.html">生活，而非生存！</a></h1>
+            <ul class="header-menu">
+                <li><a href="/html/tagBlogList.html?tag=学习">学习</a></li>
+                <li><a href="/html/tagBlogList.html?tag=生活">生活</a></li>
+                <li><a href="/html/tagBlogList.html?tag=追星">追星</a></li>
+                <li><a href="/html/tagBlogList.html?tag=分享">分享</a></li>
+                <li><a href="/html/tagBlogList.html?tag=故事">故事</a></li>
+            </ul>
+            <div class="header-search">
+                <input type="text" placeholder="请输入关键词查找"/>
+                <a class="search-btn" id="search-btn">搜索</a>
+            </div>
+        </div>
+    </header>
+    <div class="content">
+        <div class="container">
+            <div class="left-content">
+                <div class="blog-tag-article" id="blog-tag-article">
+                    <div v-if="showInfo">{{showInfo}}</div>
+                    <div v-else class="blog-tag-article-item" v-for="item in blogList">
+                        <a class="article-content" :href="item.link">
+                            <h3>{{item.title}}</h3>
+                            <div>{{item.brief}}</div>
+                        </a>
+                        <div class="article-details">
+                            <span>发布于{{item.ctime}}</span> | <span> 浏览（{{item.views}}）</span> | Tags: 
+                            <span class="article-tag">{{item.tags}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-content">
+                <div class="tags-random right-set" id="random-tags">
+                    <h3>热门标签</h3> <span class="changeTags" @click="getNewTags()">换一换</span>
+                    <div class="tags">
+                        <a v-for="tag in tags" :style="{color: randomColor(),fontSize: randomSize()}" :href="tag.link">{{tag.tag}}</a>
+                    </div>
+                </div>
+                <div class="right-set hot-article" id="hot-article">
+                    <h3>最近热门</h3>
+                    <ul class="hot-article-list">
+                        <li v-for="article in hotArticle">
+                            <a :href="article.link">{{article.title}} <span class="hot-article-time">{{article.ctime}}</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="right-set new-comments" id="new-comments">
+                    <h3>最新评论</h3>
+                    <div v-if="noComments" class="noComments">
+                        {{noComments}}
+                    </div>
+                    <ul v-else>
+                        <li v-for="comment in newComments">
+                            <div>
+                                <span class="username">{{comment.username}}</span>
+                                <span class="comments-time">{{comment.ctime}}</span>
+                            </div>
+                            <a :href="comment.link">{{comment.content}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- <div class="right-set friendly-link">
+                    <h3>友情链接</h3>
+                    <a href="#">我是友情链接</a>
+                    <a href="#">我是友情链接</a>
+                    <a href="#">我是友情链接</a>
+                    <a href="#">我是友情链接</a>
+                    <a href="#">我是友情链接</a>
+                    <a href="#">我是友情链接</a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="u-link">
+            <a href="#">aaa</a>
+            <a href="#">aaaaaaaaaaaaa</a>
+            <a href="#">aaa</a>
+            <a href="#">aaa</a>
+            <a href="#">aaaaaaaa</a>
+        </div>
+        <div class="web-details">Copyright © 2010-2017 <a>angela个人博客 </a>All rights reserved.站长统计</div>
+    </footer>
+    <script src="../js/base.js"></script>
+    <script src="../js/tagBlogList.js"></script>
+</body>
+</html>

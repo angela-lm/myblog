@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>上传文章</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="opensource rich wysiwyg text editor jquery bootstrap execCommand html5" />
+    <meta name="description" content="This tiny jQuery Bootstrap WYSIWYG plugin turns any DIV into a HTML5 rich text editor" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/external/jquery.hotkeys.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="../js/external/google-code-prettify/prettify.js"></script>
+		<link href="../css/editor.css" rel="stylesheet">
+    <script src="../js/bootstrap-wysiwyg.js"></script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <h3 class="my-title">我的文章编辑器</h3>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="article-type">
+            <span class="chosen">文章类型</span>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu type-chose" aria-labelledby="dropdownMenu1">
+            <li><a href="#">每日一句</a></li>
+            <li><a href="#">博客</a></li>
+          </ul>
+        </div>
+        <div class="blog-btn-group">
+            <div class="input-group">
+                <label class="input-group-addon" for="article-title">请输入文章标题</label>
+                <input type="text" class="form-control" placeholder="文章标题…" aria-describedby="article-title" id="article-title">
+            </div>
+            <div class="input-group tags">
+              <label class="input-group-addon" for="article-tags">请输入标签</label>
+              <input type="text" class="form-control" placeholder="标签请用逗号隔开…" aria-describedby="article-tags" id="article-tags">
+          </div>
+          <div class="input-group brief">
+              <label class="input-group-addon" for="article-brief">请输入简介</label>
+              <input type="text" class="form-control" placeholder="简介简明扼要哦…" aria-describedby="article-brief" id="article-brief">
+          </div>
+        </div>
+        <div class="everyday-btn-group">
+            <div class="input-group">
+                <label class="input-group-addon" for="everyday-china">中文</label>
+                <input type="text" class="form-control" placeholder="文章标题…" aria-describedby="article-title" id="everyday-china">
+            </div>
+            <div class="input-group">
+              <label class="input-group-addon" for="everday-english">英文</label>
+              <input type="text" class="form-control" placeholder="english……" aria-describedby="article-tags" id="everyday-english">
+          </div>
+          <div class="input-group">
+              <label class="input-group-addon" for="everyday-author">作者</label>
+              <input type="text" class="form-control" placeholder="作者名字" aria-describedby="article-tags" id="everyday-author">
+          </div>
+        </div>
+        <div class="hole-editor">
+            <div id="alerts"></div>
+            <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+              <!-- 设置字体 -->
+              <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="icon-font"></i><b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                  </ul>
+                </div>
+                <!-- 设置字体大小 -->
+              <div class="btn-group">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                  <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+                  <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+                  <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                  </ul>
+              </div>
+              <!-- 字体 粗 斜体 删除 下划线 -->
+              <div class="btn-group">
+                <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+                <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+                <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
+                <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+              </div>
+              <!-- 有序 无序 空格 不空 -->
+              <div class="btn-group">
+                <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="icon-list-ul"></i></a>
+                <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="icon-list-ol"></i></a>
+                <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
+                <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
+              </div>
+              <!-- 居左 居中 居右 两端 -->
+              <div class="btn-group">
+                <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
+                <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
+                <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
+                <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
+              </div>
+              <!-- 插入链接 移除链接-->
+              <div class="btn-group">
+              <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
+                <div class="dropdown-menu input-append">
+                  <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
+                  <button class="btn" type="button">Add</button>
+                </div>
+                <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
+              </div> 
+              <!-- 插入图片 -->
+              <div class="btn-group">
+                <a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
+                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
+              </div>
+              <!-- 撤销 向前进 -->
+              <div class="btn-group">
+                <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
+                <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
+              </div>
+              <!-- <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech=""> -->
+            </div>
+            <div id="editor">Go ahead&hellip;</div>
+        </div>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-default" id="submit-article">提交文章</button>
+        </div>
+    </div>
+    <script>
+      $(function(){
+        // 初始化菜单栏
+        function initToolbarBootstrapBindings() {
+          // 字体集合
+          var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier', 
+                'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+                'Times New Roman', 'Verdana'],
+                fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+          // 渲染 
+          $.each(fonts, function (idx, fontName) {
+              fontTarget.append($('<li><a data-edit="fontName ' + fontName +'" style="font-family:\''+ fontName +'\'">'+fontName + '</a></li>'));
+          });
+          $('a[title]').tooltip({container:'body'});
+          // 链接
+          $('.dropdown-menu input').click(function() {return false;})
+            .change(function () {$(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');})
+            .keydown('esc', function () {this.value='';$(this).change();});
+          // 图片
+          $('[data-role=magic-overlay]').each(function () { 
+            var overlay = $(this), target = $(overlay.data('target')); 
+            overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
+          });
+      };
+      // 上传文件错误
+      function showErrorAlert (reason, detail) {
+        var msg='';
+        if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
+        else {
+          console.log("error uploading file", reason, detail);
+        }
+        $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+ 
+        '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+      };
+      initToolbarBootstrapBindings();  
+      $('#editor').wysiwyg({ fileUploadError: showErrorAlert} );
+        window.prettyPrint && prettyPrint();
+      });
+      $('#submit-article').on('click',function() {
+        var data = {};
+        if($('.chosen').text()  == '文章类型'){
+          alert('请选择文章类型');
+        }else{
+          if($('.chosen').text() == '每日一句'){
+            var everydayChina = $('#everyday-china').val();
+            var everydayEnglish = $('#everyday-english').val();
+            var everydayAuthor = $('#everyday-author').val();
+            data ='everydayChina=' + everydayChina + '&everydayEnglish='+ everydayEnglish + '&everydayAuthor=' + everydayAuthor;
+          }else{
+            var title = $('#article-title').val();
+            var tags = $('#article-tags').val();
+            var content = $('#editor').html();
+            var brief = $('#article-brief').val();
+            data = 'title=' + title + '&tags='+ tags + '&content=' + content + '&brief=' + brief;
+          }
+        var url = $('.chosen').text() === '每日一句' ? '/editEveryDay' : '/editBlog';
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data:data,
+          success: function(resp) {
+            $('#everyday-china').val('');
+            $('#everyday-english').val('');
+            $('#everyday-author').val('');
+            $('#article-title').val('');
+            $('#article-tags').val('');
+            $('#editor').html('');
+
+          },
+          error: function (resp) {
+            console.log(resp);
+          }
+        })
+        }
+      })
+      $('.type-chose li a').on('click',function() {
+        $('.chosen').text($(this).text());
+        if($('.chosen').text() == '博客'){
+          $('.blog-btn-group').css('display','block');
+          $('.hole-editor').css('display','block');
+          $('.everyday-btn-group').css('display','none');
+        }else if($('.chosen').text() == '每日一句'){
+          $('.blog-btn-group').css('display','none');
+          $('.hole-editor').css('display','none');
+          $('.everyday-btn-group').css('display','block');
+        }
+      })
+    </script>
+</html>
